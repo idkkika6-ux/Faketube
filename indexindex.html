@@ -1,0 +1,287 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FakeTube</title>  <!-- ====== GLOBAL STYLES ====== -->  <style>
+    :root {
+      --bg: #0f0f0f;
+      --bg2: #181818;
+      --card: #212121;
+      --text: #ffffff;
+      --muted: #aaaaaa;
+      --accent: #ff0000;
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ====== TOP NAV ====== */
+    .topbar {
+      height: 64px;
+      background: var(--bg2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    .search {
+      flex: 1;
+      max-width: 600px;
+      margin: 0 20px;
+    }
+
+    .search input {
+      width: 100%;
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: none;
+      background: #121212;
+      color: white;
+      font-size: 16px;
+    }
+
+    .profile {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff0000, #ff6a00);
+    }
+
+    /* ====== LAYOUT ====== */
+    .layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+    }
+
+    /* ====== SIDEBAR ====== */
+    .sidebar {
+      background: var(--bg2);
+      padding: 16px;
+      height: calc(100vh - 64px);
+      position: sticky;
+      top: 64px;
+    }
+
+    .menu {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .menu a {
+      padding: 12px 14px;
+      border-radius: var(--radius);
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .menu a:hover {
+      background: var(--card);
+      color: white;
+    }
+
+    .menu a.active {
+      background: var(--card);
+      color: white;
+    }
+
+    /* ====== MAIN CONTENT ====== */
+    .content {
+      padding: 24px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    /* ====== VIDEO CARD ====== */
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    }
+
+    .thumb {
+      height: 160px;
+      background: linear-gradient(135deg, #333, #111);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+    }
+
+    .info {
+      padding: 14px;
+    }
+
+    .title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .meta {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* ====== RESPONSIVE ====== */
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+    }
+    /* ====== VIDEO PLAYER MODAL ====== */
+    .player-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+
+    .player-box {
+      width: 90%;
+      max-width: 900px;
+      background: #000;
+      border-radius: var(--radius);
+      position: relative;
+      padding: 12px;
+    }
+
+    .player-box video {
+      width: 100%;
+      border-radius: var(--radius);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: -14px;
+      right: -14px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+</style></head>
+<body>  <!-- ====== TOP BAR ====== -->  <div class="topbar">
+    <div class="logo">FakeTube</div>
+    <div class="search">
+      <input type="text" placeholder="Search" />
+    </div>
+    <div class="profile"></div>
+  </div>  <!-- ====== PAGE LAYOUT ====== -->  <div class="layout"><!-- SIDEBAR -->
+<aside class="sidebar">
+  <nav class="menu">
+    <a class="active" href="#">Home</a>
+    <a href="#">Shorts</a>
+    <a href="#">Subscriptions</a>
+    <a href="#">Library</a>
+    <a href="#">History</a>
+    <a href="#">Settings</a>
+  </nav>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="content">
+  <div class="grid">
+
+    <div class="card" data-video="https://www.w3schools.com/html/mov_bbb.mp4">
+      <div class="thumb">▶</div>
+      <div class="info">
+        <div class="title">How I broke my phone in 2 minutes</div>
+        <div class="meta">Some Guy • 1.2M views</div>
+      </div>
+    </div>
+
+    <div class="card" data-video="https://www.w3schools.com/html/movie.mp4">
+      <div class="thumb">▶</div>
+      <div class="info">
+        <div class="title">Android customization gone too far</div>
+        <div class="meta">Tech Nerd • 420K views</div>
+      </div>
+    </div>
+
+    <div class="card" data-video="https://www.w3schools.com/html/mov_bbb.mp4">
+      <div class="thumb">▶</div>
+      <div class="info">
+        <div class="title">This UI is illegal</div>
+        <div class="meta">Design Crimes • 69K views</div>
+      </div>
+    </div>
+
+    <div class="card" data-video="https://www.w3schools.com/html/movie.mp4">
+      <div class="thumb">▶</div>
+      <div class="info">
+        <div class="title">ChatGPT built my website</div>
+        <div class="meta">AI Things • 999K views</div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- VIDEO PLAYER MODAL -->
+<div id="playerModal" class="player-modal">
+  <div class="player-box">
+    <button class="close-btn">✕</button>
+    <video id="videoPlayer" controls autoplay></video>
+  </div>
+</div>
+
+  </div>  <!-- ====== BASIC INTERACTION SCRIPT ====== -->  <script>
+    // fake video click interaction
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('click', () => {
+        alert('Video player page coming soon 👀');
+      });
+    });
+
+    // fake search filter
+    const searchInput = document.querySelector('.search input');
+    searchInput.addEventListener('input', e => {
+      const value = e.target.value.toLowerCase();
+      document.querySelectorAll('.card').forEach(card => {
+        const title = card.querySelector('.title').innerText.toLowerCase();
+        card.style.display = title.includes(value) ? 'block' : 'none';
+      });
+    });
+  </script></body>
+</html>
